@@ -1,0 +1,66 @@
+name: Builds
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "**.nix"
+      - ".github/workflows/*.yml"
+
+jobs:
+  determine-matrix:
+    name: Figure out the packages we need to build
+    runs-on: ubuntu-latest
+
+    outputs:
+      phps: ${{ steps.set-phps.outputs.phps }}
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Build PHP matrix
+        id: set-phps
+        run: |
+          echo phps=$(
+            nix flake show --json |  jq '.packages ."x86_64-linux" | keys'
+          ) >> $GITHUB_OUTPUT
+
+  build:
+    name: "${{ matrix.phps }} on ${{ matrix.archs.arch }}"
+    needs: [determine-matrix]
+    runs-on: ${{ matrix.archs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        phps: ${{fromJson(needs.determine-matrix.outputs.phps)}}
+        archs:
+          [
+            { os: ubuntu-latest, arch: x86_64-linux },
+            { os: macOS-latest, arch: x86_64-darwin },
+          ]
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Run the Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - uses: cachix/cachix-action@v12
+        with:
+          name: nix-shell
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          extraPullNames: php-src-nix
+
+      - name: Build ${{ matrix.phps }} binary
+        run: |
+          nix build .#${{ matrix.phps }}
