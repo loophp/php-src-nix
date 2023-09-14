@@ -36,7 +36,7 @@
         let
           # Set of sets { PHP_VERSION = { filename = "", name = "", ...  }, ... }
           active = builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active))));
-          activeVersions = lib.foldlAttrs (acc: name: value: acc ++ [{ version = name; rev = "php-${name}"; hash = "sha256:${value.sha256}"; }]) [ ] active;
+          activeVersions = lib.foldlAttrs (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = "${lib.versions.majorMinor name}-latest"; hash = "sha256:${value.sha256}"; }]) [ ] active;
 
           oldVersions = [
             { version = "8.0.0"; hash = "sha256-XoMtw36r9ERBC06m+z1mty5E50B6O0nKpXRu3PcbnQk="; }
@@ -110,7 +110,7 @@
 
           generic = "${inputs.nixpkgs}/pkgs/development/interpreters/php/generic.nix";
 
-          base-snapshot = { src, version ? null }: (pkgs.callPackage generic {
+          makePhpPackage = { src, version ? null }: (pkgs.callPackage generic {
             hash = null;
 
             version = if version != null then version else
@@ -223,7 +223,7 @@
 
           makePackage = versions: lib.foldl'
             (a: set: a // {
-              "php_${builtins.replaceStrings [ "." "-" ] [ "_" "_" ] set.version}" = {
+              "php-${builtins.replaceStrings [ "." ] [ "-" ] set.version}" = {
                 version = set.version;
                 src = pkgs.fetchurl { url = "https://www.php.net/distributions/php-${set.version}.tar.bz2"; hash = set.hash; };
               };
@@ -232,14 +232,14 @@
             versions;
 
           branches = {
-            php-master-snapshot = base-snapshot { src = inputs.php-src-master; };
-            php-81-snapshot = base-snapshot { src = inputs.php-src-81; };
-            php-82-snapshot = base-snapshot { src = inputs.php-src-82; };
-            php-83-snapshot = base-snapshot { src = inputs.php-src-83; };
+            php-master-snapshot = { version = "master"; src = inputs.php-src-master; };
+            php-8-1-snapshot = { version = "8.1"; src = inputs.php-src-81; };
+            php-8-2-snapshot = { version = "8.2"; src = inputs.php-src-82; };
+            php-8-3-snapshot = { version = "8.3"; src = inputs.php-src-83; };
           };
         in
-        branches // lib.mapAttrs
-          (k: v: (base-snapshot { version = v.version; src = v.src; }).withExtensions ({ all, ... }: with all; [
+        lib.mapAttrs
+          (k: v: (makePhpPackage { version = v.version; src = v.src; }).withExtensions ({ all, ... }: with all; [
             bcmath
             calendar
             curl
@@ -284,7 +284,7 @@
             zip
             zlib
           ]))
-          ((makePackage oldVersions) // (makePackage activeVersions));
+          ((makePackage oldVersions) // (makePackage activeVersions) // branches);
     };
   };
 }
