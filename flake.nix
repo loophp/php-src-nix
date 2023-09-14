@@ -173,8 +173,8 @@
                     lib.concatStringsSep "\n" [
                       (attrs.postPatch or "")
 
-                      (lib.optionalString (prev.php.version == "8.0.14") ''
-                        rm ext/opcache/tests/opt/verify_return_type.phpt
+                      (lib.optionalString (prev.php.version == "8.1.14") ''
+                        rm ext/opcache/tests/gh9968.phpt
                       '')
                     ];
                 });
