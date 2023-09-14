@@ -176,6 +176,10 @@
                       (lib.optionalString (prev.php.version == "8.1.14") ''
                         rm ext/opcache/tests/gh9968.phpt
                       '')
+
+                      (lib.optionalString (prev.php.version == "8.2.1") ''
+                        rm ext/opcache/tests/gh9968.phpt
+                      '')
                     ];
                 });
 
