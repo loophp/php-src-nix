@@ -157,7 +157,11 @@
                       '')
 
                       (lib.optionalString ((lib.versionAtLeast prev.php.version "8.0") && (lib.versionOlder prev.php.version "8.1.20")) ''
-                        # Removing tests failing with libxml2 (2.11.4) > 2.10.4
+                        rm ext/dom/tests/DOMDocument_loadXML_error2.phpt
+                        rm ext/dom/tests/DOMDocument_load_error2.phpt
+                      '')
+
+                      (lib.optionalString ((lib.versionAtLeast prev.php.version "8.2") && (lib.versionOlder prev.php.version "8.2.7")) ''
                         rm ext/dom/tests/DOMDocument_loadXML_error2.phpt
                         rm ext/dom/tests/DOMDocument_load_error2.phpt
                       '')
