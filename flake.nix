@@ -164,6 +164,17 @@
                     ];
                 });
 
+                opcache = prev.extensions.opcache.overrideAttrs (attrs: {
+                  postPatch =
+                    lib.concatStringsSep "\n" [
+                      (attrs.postPatch or "")
+
+                      (lib.optionalString (prev.php.version == "8.0.14") ''
+                        rm ext/opcache/tests/gh9968.phpt
+                      '')
+                    ];
+                });
+
                 openssl = prev.extensions.openssl.overrideAttrs (attrs: {
                   buildInputs =
                     let
@@ -180,7 +191,7 @@
                 });
 
                 sockets = prev.extensions.sockets.overrideAttrs (attrs: {
-                  patches = attrs.patches or [] ++ lib.optionals (prev.php.version == "8.0.15") [
+                  patches = attrs.patches or [ ] ++ lib.optionals (prev.php.version == "8.0.15") [
                     # See https://github.com/php/php-src/pull/7981
                     (pkgs.fetchpatch {
                       url = "https://github.com/php/php-src/commit/6a6c8a60965c6fc3f145870a49b13b719ebd4a72.patch";
