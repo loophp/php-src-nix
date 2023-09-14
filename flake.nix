@@ -237,7 +237,7 @@
             versions;
 
           branches = {
-            php-master-snapshot = { version = "master"; src = inputs.php-src-master; };
+            php-master-snapshot = { version = "8.4.0"; src = inputs.php-src-master; };
             php-8-1-snapshot = { version = "8.1.999"; src = inputs.php-src-81; };
             php-8-2-snapshot = { version = "8.2.999"; src = inputs.php-src-82; };
             php-8-3-snapshot = { version = "8.3.999"; src = inputs.php-src-83; };
