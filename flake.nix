@@ -222,14 +222,17 @@
           });
 
           makePackage = versions: lib.foldl'
-            (a: set: a // (let
-              name = set.name or "php-${builtins.replaceStrings [ "." ] [ "-" ] set.version}";
-            in {
-              "${name}" = {
-                version = set.version;
-                src = pkgs.fetchurl { url = "https://www.php.net/distributions/php-${set.version}.tar.bz2"; hash = set.hash; };
-              };
-            }))
+            (a: set: a // (
+              let
+                name = set.name or "php-${builtins.replaceStrings [ "." ] [ "-" ] set.version}";
+              in
+              {
+                "${name}" = {
+                  version = set.version;
+                  src = pkgs.fetchurl { url = "https://www.php.net/distributions/php-${set.version}.tar.bz2"; hash = set.hash; };
+                };
+              }
+            ))
             { }
             versions;
 
