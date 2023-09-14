@@ -36,7 +36,7 @@
         let
           # Set of sets { PHP_VERSION = { filename = "", name = "", ...  }, ... }
           active = builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active))));
-          activeVersions = lib.foldlAttrs (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = "${lib.versions.majorMinor name}"; name = "php-${builtins.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor name)}-latest"; hash = "sha256:${value.sha256}"; }]) [ ] active;
+          activeVersions = lib.foldlAttrs (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = name; name = "php-${builtins.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor name)}-latest"; hash = "sha256:${value.sha256}"; }]) [ ] active;
 
           oldVersions = [
             { version = "8.0.0"; hash = "sha256-XoMtw36r9ERBC06m+z1mty5E50B6O0nKpXRu3PcbnQk="; }
