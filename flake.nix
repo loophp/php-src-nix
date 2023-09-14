@@ -156,7 +156,7 @@
                         rm ext/dom/tests/DOMDocument_load_error1.phpt
                       '')
 
-                      (lib.optionalString (lib.versionAtLeast prev.php.version "8.0") ''
+                      (lib.optionalString ((lib.versionAtLeast prev.php.version "8.0") && (lib.versionOlder prev.php.version "8.1.20")) ''
                         # Removing tests failing with libxml2 (2.11.4) > 2.10.4
                         rm ext/dom/tests/DOMDocument_loadXML_error2.phpt
                         rm ext/dom/tests/DOMDocument_load_error2.phpt
@@ -181,6 +181,12 @@
 
                 sockets = prev.extensions.sockets.overrideAttrs (attrs: {
                   patches = attrs.patches or [] ++ lib.optionals (prev.php.version == "8.0.15") [
+                    # See https://github.com/php/php-src/pull/7981
+                    (pkgs.fetchpatch {
+                      url = "https://github.com/php/php-src/commit/6a6c8a60965c6fc3f145870a49b13b719ebd4a72.patch";
+                      hash = "sha256-WCdHQIKBg24AWLAftHuCLZ+QqRVZXWdHFqZhmRSJ7+Y=";
+                    })
+                  ] ++ lib.optionals (prev.php.version == "8.1.2") [
                     # See https://github.com/php/php-src/pull/7981
                     (pkgs.fetchpatch {
                       url = "https://github.com/php/php-src/commit/6a6c8a60965c6fc3f145870a49b13b719ebd4a72.patch";
