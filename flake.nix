@@ -280,6 +280,7 @@
             tokenizer
             xmlreader
             xmlwriter
+            xsl
             zip
             zlib
           ]))
