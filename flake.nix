@@ -27,6 +27,10 @@
   outputs = inputs@{ self, flake-parts, systems, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
     systems = import systems;
 
+    imports = [
+      inputs.flake-parts.flakeModules.easyOverlay
+    ];
+
     perSystem = { config, self', inputs', pkgs, system, lib, ... }: {
       checks = self'.packages;
 
