@@ -8,5 +8,5 @@
       "enabled": true,
       "automerge": true
     },
-    "schedule": ["0 0 * * *"]
+    "schedule": ["before 4am"]
   }
