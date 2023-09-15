@@ -78,6 +78,11 @@ To use the binary cache, issue the following command:
 cachix use php-src-nix
 ```
 
+Two architectures are available: `x86_64-linux` and `x86_64-darwin`, those are
+provided for free by GitHub.
+
+The compilation process is therefore totally transparent to the end-user.
+
 ## Contributing
 
 Feel free to contribute by sending pull requests. We are a usually very
