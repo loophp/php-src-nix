@@ -36,6 +36,8 @@
 
       formatter = pkgs.nixpkgs-fmt;
 
+      overlayAttrs = self'.packages;
+
       packages =
         let
           # Set of sets { PHP_VERSION = { filename = "", name = "", ...  }, ... }
