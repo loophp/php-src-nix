@@ -1,4 +1,4 @@
-# PHP binaries from sources
+# PHP builds for Nix, with Nix
 
 [![GitHub Workflow Status][github workflow status]][github actions link]
 [![Donate!][donate github]][donate github link]
@@ -16,11 +16,11 @@ development versions, pulled directly from the respective git branches.
 
 The naming pattern is the following:
 
-- `php-8.1.0`: Specifies the PHP version 8.1.0 build
+- `php-8-1-0`: Specifies the PHP version 8.1.0 build
   (released on 26th Nov 2020).
-- `php-8.1-latest`: An alias that points to the latest stable release in the
+- `php-8-1-latest`: An alias that points to the latest stable release in the
   PHP 8.1 series.
-- `php-8.1-snapshot`: Represents the latest development version of PHP 8.1,
+- `php-8-1-snapshot`: Represents the latest development version of PHP 8.1,
   pulled from the corresponding git branch.
 
 PHP is compiled with the following built-in extensions: `bcmath`, `calendar`,
