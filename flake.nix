@@ -47,10 +47,10 @@
             (builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active)))));
 
           developmentVersions = {
-            php-8-1-snapshot = { version = "8.1.999"; src = inputs.php-src-81; };
-            php-8-2-snapshot = { version = "8.2.999"; src = inputs.php-src-82; };
-            php-8-3-snapshot = { version = "8.3.999"; src = inputs.php-src-83; };
-            php-master-snapshot = { version = "8.4.999"; src = inputs.php-src-master; };
+            php-8-1-snapshot = { version = "8.1.999.${inputs.php-src-81.shortRev}"; src = inputs.php-src-master; };
+            php-8-2-snapshot = { version = "8.2.999.${inputs.php-src-82.shortRev}"; src = inputs.php-src-master; };
+            php-8-3-snapshot = { version = "8.3.999.${inputs.php-src-83.shortRev}"; src = inputs.php-src-master; };
+            php-master-snapshot = { version = "8.4.999.${inputs.php-src-master.shortRev}"; src = inputs.php-src-master; };
           };
 
           archivedVersions = [
