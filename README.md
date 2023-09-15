@@ -3,9 +3,9 @@
 [![GitHub Workflow Status][github workflow status]][github actions link]
 [![Donate!][donate github]][donate github link]
 
-This repository maintains a continuous integration workflow powered by Nix,
-designed to build all existing PHP versions starting from version 8.0, including
-snapshots of the current development versions.
+This repository maintains a continuous integration workflow powered by
+[Nix][nix], designed to build all existing PHP versions starting from version
+8.0, including snapshots of the current development versions.
 
 Our workflow operates daily, triggering a build at midnight. To enhance
 efficiency, we have implemented a caching mechanism that stores the generated
@@ -95,4 +95,5 @@ contributors][github contributors].
 [github actions link]: https://github.com/loophp/php-src-nix/actions
 [donate github]: https://img.shields.io/badge/Sponsor-Github-brightgreen.svg?style=flat-square
 [donate github link]: https://github.com/sponsors/drupol
+[nix]: https://nixos.org/
 [github contributors]: https://github.com/loophp/php-src-nix/graphs/contributors
