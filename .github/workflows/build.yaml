@@ -12,6 +12,7 @@ on:
     paths:
       - "**.nix"
       - ".github/workflows/*.yml"
+      - ".github/workflows/*.yaml"
   workflow_dispatch:
 
 jobs:
