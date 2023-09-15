@@ -41,10 +41,19 @@
       packages =
         let
           # Set of sets { PHP_VERSION = { filename = "", name = "", ...  }, ... }
-          active = builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active))));
-          activeVersions = lib.foldlAttrs (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = name; name = "php-${builtins.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor name)}-latest"; hash = "sha256:${value.sha256}"; }]) [ ] active;
+          activeVersions = lib.foldlAttrs
+            (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = name; name = "php-${builtins.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor name)}-latest"; hash = "sha256:${value.sha256}"; }])
+            [ ]
+            (builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active)))));
 
-          oldVersions = [
+          developmentVersions = {
+            php-8-1-snapshot = { version = "8.1.999"; src = inputs.php-src-81; };
+            php-8-2-snapshot = { version = "8.2.999"; src = inputs.php-src-82; };
+            php-8-3-snapshot = { version = "8.3.999"; src = inputs.php-src-83; };
+            php-master-snapshot = { version = "8.4.999"; src = inputs.php-src-master; };
+          };
+
+          archivedVersions = [
             { version = "8.0.0"; hash = "sha256-XoMtw36r9ERBC06m+z1mty5E50B6O0nKpXRu3PcbnQk="; }
             { version = "8.0.1"; hash = "sha256-xE52r0DRM95kVk+cr12uxSu+hMHMtORQCmIjPWFOve4="; }
             { version = "8.0.2"; hash = "sha256-AA+onj6uMXwLF+4EginNaKOKOw/vcsVYaB/QBAV7o+Y="; }
@@ -227,7 +236,7 @@
             };
           });
 
-          makePackage = versions: lib.foldl'
+          makePackageSet = versions: lib.foldl'
             (a: set: a // (
               let
                 name = set.name or "php-${builtins.replaceStrings [ "." ] [ "-" ] set.version}";
@@ -241,13 +250,6 @@
             ))
             { }
             versions;
-
-          branches = {
-            php-master-snapshot = { version = "8.4.0"; src = inputs.php-src-master; };
-            php-8-1-snapshot = { version = "8.1.999"; src = inputs.php-src-81; };
-            php-8-2-snapshot = { version = "8.2.999"; src = inputs.php-src-82; };
-            php-8-3-snapshot = { version = "8.3.999"; src = inputs.php-src-83; };
-          };
         in
         lib.mapAttrs
           (k: v: (makePhpPackage { version = v.version; src = v.src; }).withExtensions ({ all, ... }: with all; [
@@ -295,7 +297,7 @@
             zip
             zlib
           ]))
-          ((makePackage oldVersions) // (makePackage activeVersions) // branches);
+          ((makePackageSet archivedVersions) // (makePackageSet activeVersions) // developmentVersions);
     };
   };
 }
