@@ -12,6 +12,7 @@ on:
     paths:
       - "**.nix"
       - ".github/workflows/*.yml"
+  workflow_dispatch:
 
 jobs:
   determine-matrix:
