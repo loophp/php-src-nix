@@ -31,6 +31,11 @@ PHP is compiled with the following built-in extensions: `bcmath`, `calendar`,
 `soap`, `sodium`, `sysvsem`, `sqlite3`, `tokenizer`, `xmlreader`, `xmlwriter`,
 `xsl`, `zip`, `zlib`.
 
+The list of default architectures the CI builds are made for:
+
+ - `x86_64-linux`
+ - `x86_64-darwin`
+
 ## Usage
 
 To view the list of available packages, execute the following command:
