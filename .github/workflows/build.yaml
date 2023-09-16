@@ -1,7 +1,7 @@
 name: Builds
 
 concurrency:
-  group: ${{ github.ref }}
+  group: php-src-nix
   cancel-in-progress: true
 
 on:
