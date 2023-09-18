@@ -47,9 +47,9 @@
             (builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active)))));
 
           developmentVersions = {
-            php-8-1-snapshot = { version = "8.1.999.${inputs.php-src-81.shortRev}"; src = inputs.php-src-master; };
-            php-8-2-snapshot = { version = "8.2.999.${inputs.php-src-82.shortRev}"; src = inputs.php-src-master; };
-            php-8-3-snapshot = { version = "8.3.999.${inputs.php-src-83.shortRev}"; src = inputs.php-src-master; };
+            php-8-1-snapshot = { version = "8.1.999.${inputs.php-src-81.shortRev}"; src = inputs.php-src-81; };
+            php-8-2-snapshot = { version = "8.2.999.${inputs.php-src-82.shortRev}"; src = inputs.php-src-82; };
+            php-8-3-snapshot = { version = "8.3.999.${inputs.php-src-83.shortRev}"; src = inputs.php-src-83; };
             php-master-snapshot = { version = "8.4.999.${inputs.php-src-master.shortRev}"; src = inputs.php-src-master; };
           };
 
@@ -230,7 +230,7 @@
                 });
 
                 tokenizer = prev.extensions.tokenizer.overrideAttrs (attrs: {
-                  patches = if lib.versionOlder prev.php.version "8.1" then [ ] else attrs.patches;
+                  patches = [ ] ++ lib.optionals (lib.versionAtLeast prev.php.version "8.1") attrs.patches;
                 });
               };
             };
@@ -243,8 +243,11 @@
               in
               {
                 "${name}" = {
-                  version = set.version;
-                  src = pkgs.fetchurl { url = "https://www.php.net/distributions/php-${set.version}.tar.bz2"; hash = set.hash; };
+                  inherit (set) version;
+                  src = pkgs.fetchurl {
+                    inherit (set) hash;
+                    url = "https://www.php.net/distributions/php-${set.version}.tar.bz2";
+                  };
                 };
               }
             ))
@@ -252,7 +255,7 @@
             versions;
         in
         lib.mapAttrs
-          (k: v: (makePhpPackage { version = v.version; src = v.src; }).withExtensions ({ all, ... }: with all; [
+          (k: v: (makePhpPackage v).withExtensions ({ all, ... }: with all; [
             bcmath
             calendar
             curl
