@@ -33,8 +33,8 @@ PHP is compiled with the following built-in extensions: `bcmath`, `calendar`,
 
 The list of default architectures the CI builds are made for:
 
- - `x86_64-linux`
- - `x86_64-darwin`
+- `x86_64-linux`
+- `x86_64-darwin`
 
 ## Usage
 
@@ -64,10 +64,10 @@ pkgs = import nixpkgs {
 ## Compilation
 
 If you attempt to use a PHP version not previously compiled
-(*in the unlikely event that the version is unavailable*), the compilation will
+(_in the unlikely event that the version is unavailable_), the compilation will
 occur locally on your machine. Note that this process is time-consuming.
 Thankfully, we offer a binary cache to bypass redundant compilations and save
-time (*If it build once, why bother compiling it again anyway?*).
+time (_If it build once, why bother compiling it again anyway?_).
 
 We leverage [Cachix](https://cachix.org/) to facilitate this binary caching
 mechanism. A big thank you to them!
