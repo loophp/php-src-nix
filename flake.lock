@@ -51,22 +51,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1695882852,
-        "narHash": "sha256-jq3yJKRZQGNpvPgAzanefHZ4oBwv1Zs2gOfoAu74eqY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a9f6c4e42df9296e3994fdf1f6af9ec99ec385bc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "php-active": {
       "flake": false,
       "locked": {
@@ -151,7 +135,6 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master",
         "php-active": "php-active",
         "php-src-81": "php-src-81",
         "php-src-82": "php-src-82",
