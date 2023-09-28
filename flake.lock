@@ -54,7 +54,7 @@
     "php-active": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-/R6jhOdUFO3ptrcfZ2d+HeT19Kt/h3lf6m06l39VEMU=",
+        "narHash": "sha256-7ISUiJjiPCu0yx/e+xcJMPskpDYl1bO9eum6cPkjnB8=",
         "type": "file",
         "url": "https://www.php.net/releases/active"
       },
