@@ -1,8 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # This "nixpkgs-master" input is not used, it's mostly for renovate.
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     systems.url = "github:nix-systems/default";
     php-src-master = {
       url = "github:php/php-src/master";
