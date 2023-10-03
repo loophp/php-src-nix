@@ -1,6 +1,7 @@
 name: "Merge"
 
 on:
+  workflow_dispatch:
   workflow_run:
     types:
       - "completed"
