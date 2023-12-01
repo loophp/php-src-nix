@@ -26,12 +26,12 @@ let
     { }
     versions;
 
-  # Set of sets { PHP_VERSION = { filename = "", name = "", ...  }, ... }
-  activeVersions = lib.foldlAttrs
-    (acc: name: value: acc ++ [{ version = name; hash = "sha256:${value.sha256}"; } { version = name; name = "php-${builtins.replaceStrings [ "." ] [ "-" ] (lib.versions.majorMinor name)}-latest"; hash = "sha256:${value.sha256}"; }])
-    [ ]
-    (builtins.listToAttrs (builtins.concatMap (x: builtins.map (x: { name = x.version; value = builtins.elemAt x.source 1; }) (builtins.attrValues x)) (builtins.attrValues (builtins.fromJSON (builtins.readFile inputs.php-active)))));
+  versions = [
+    { version = "8.1.26"; hash = "sha256-g73iSchKoaBDqMjQ7qCTRcLK5puXhM3wIin8kW+7nqA="; }
+    { version = "8.2.13"; hash = "sha256-ZlKfQ7ITEx5rJTxWAr7wXwSUWNISknMPzNY7SKBtZ7o="; }
+    { version = "8.3.0"; hash = "sha256-3mfQgz1CsZblpm+hozL0Xilsvo6UcuklayoHHDTcXtY="; }
+  ];
 in
 lib.mapAttrs
   (k: v: (makePhpPackage v))
-  (makePackageSet activeVersions)
+  (makePackageSet versions)

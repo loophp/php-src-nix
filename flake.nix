@@ -18,10 +18,6 @@
       url = "github:php/php-src/PHP-8.3";
       flake = false;
     };
-    php-active = {
-      url = "https://www.php.net/releases/active";
-      flake = false;
-    };
   };
 
   outputs = inputs@{ self, flake-parts, systems, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
