@@ -105,11 +105,11 @@
     "php-src-master": {
       "flake": false,
       "locked": {
-        "lastModified": 1701837540,
-        "narHash": "sha256-eUKqDhJW5fIZl9uHFS4br7bQ+g4ItmkUEAZymBIME0M=",
+        "lastModified": 1701842411,
+        "narHash": "sha256-e6fp3HsWj40E/ojxxKN8TKNbVA9fpxnO/nhSnYkeOoM=",
         "owner": "php",
         "repo": "php-src",
-        "rev": "d751e615048718d513121ec8d6b3125755c42c48",
+        "rev": "683e78786070ab77d33f7787598ac1b90d68390a",
         "type": "github"
       },
       "original": {
