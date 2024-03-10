@@ -13,7 +13,7 @@ let
 
   generic = "${inputs.nixpkgs}/pkgs/development/interpreters/php/generic.nix";
 
-  makePhpPackage = { src, version ? null }: (prev.callPackage generic {
+  makePhpPackage = { src, version ? null, patches ? [] }: (prev.callPackage generic {
     hash = null;
 
     version = if version != null then version else
@@ -37,6 +37,8 @@ let
 
     phpAttrsOverrides = attrs: {
       inherit src;
+
+      patches = attrs.patches or [ ] ++ patches;
 
       preInstall = attrs.preInstall or "" + ''
         if [[ ! -f ./pear/install-pear-nozlib.phar ]]; then
