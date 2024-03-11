@@ -30,7 +30,7 @@ let
     versions;
 
   versions = [
-    { version = "8.1.26"; hash = "sha256-g73iSchKoaBDqMjQ7qCTRcLK5puXhM3wIin8kW+7nqA="; patches = [ patches.libxmlpatch patches.ext_sqlite3 patches.ext_dom patches.ext_sqlite3_tests ]; }
+    { version = "8.1.26"; hash = "sha256-g73iSchKoaBDqMjQ7qCTRcLK5puXhM3wIin8kW+7nqA="; patches = { php = [ patches.ext_sqlite3_tests patches.libxmlpatch patches.ext_sqlite3 patches.ext_dom ]; sqlite3 = [ patches.ext_sqlite3_tests ]; dom = [ patches.ext_dom_tests_php81 ]; }; }
     { version = "8.2.13"; hash = "sha256-ZlKfQ7ITEx5rJTxWAr7wXwSUWNISknMPzNY7SKBtZ7o="; }
     { version = "8.3.0"; hash = "sha256-3mfQgz1CsZblpm+hozL0Xilsvo6UcuklayoHHDTcXtY="; }
   ];

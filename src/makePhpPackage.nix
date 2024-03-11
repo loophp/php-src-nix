@@ -38,7 +38,7 @@ let
     phpAttrsOverrides = attrs: {
       inherit src;
 
-      patches = attrs.patches or [ ] ++ patches;
+      patches = attrs.patches or [ ] ++ (patches.php or []);
 
       preInstall = attrs.preInstall or "" + ''
         if [[ ! -f ./pear/install-pear-nozlib.phar ]]; then
@@ -50,27 +50,7 @@ let
     packageOverrides = finalPO: prevPO: {
       extensions = prevPO.extensions // {
         dom = prevPO.extensions.dom.overrideAttrs (attrs: {
-          postPatch =
-            lib.concatStringsSep "\n" [
-              (attrs.postPatch or "")
-
-              (lib.optionalString (lib.versionOlder prevPO.php.version "8.0.8") ''
-                # 4cc261aa6afca2190b1b74de39c3caa462ec6f0b deletes this file but fetchpatch does not support deletions.
-                rm ext/dom/tests/bug80268.phpt
-                rm ext/dom/tests/DOMDocument_loadXML_error1.phpt
-                rm ext/dom/tests/DOMDocument_load_error1.phpt
-              '')
-
-              (lib.optionalString ((lib.versionAtLeast prevPO.php.version "8.0") && (lib.versionOlder prevPO.php.version "8.1.20")) ''
-                rm ext/dom/tests/DOMDocument_loadXML_error2.phpt
-                rm ext/dom/tests/DOMDocument_load_error2.phpt
-              '')
-
-              (lib.optionalString ((lib.versionAtLeast prevPO.php.version "8.2") && (lib.versionOlder prevPO.php.version "8.2.7")) ''
-                rm ext/dom/tests/DOMDocument_loadXML_error2.phpt
-                rm ext/dom/tests/DOMDocument_load_error2.phpt
-              '')
-            ];
+          patches = (patches.dom or []) ++ attrs.patches;
         });
 
         opcache = prevPO.extensions.opcache.overrideAttrs (attrs: {
@@ -121,6 +101,10 @@ let
 
         tokenizer = prevPO.extensions.tokenizer.overrideAttrs (attrs: {
           patches = [ ] ++ lib.optionals (lib.versionAtLeast prevPO.php.version "8.1") attrs.patches;
+        });
+
+        sqlite3 = prevPO.extensions.sqlite3.overrideAttrs (attrs: {
+          patches = (patches.sqlite3 or []) ++ attrs.patches;
         });
       };
     };

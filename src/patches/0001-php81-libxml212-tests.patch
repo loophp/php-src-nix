@@ -1,17 +1,19 @@
-From 186d513d5b1012ec433897eca7cd2677f3f3043c Mon Sep 17 00:00:00 2001
+From 44e8771fc23ffcbedf392df6b28cee6fbcaf62d4 Mon Sep 17 00:00:00 2001
 From: Pol Dellaiera <pol.dellaiera@protonmail.com>
-Date: Mon, 11 Mar 2024 15:42:46 +0100
+Date: Mon, 11 Mar 2024 16:36:58 +0100
 Subject: [PATCH] php81-libxml212-tests.patch
 
 ---
  ext/dom/tests/DOMDocument_loadXML_error1.phpt |  4 +++
  .../DOMDocument_loadXML_error1_gte2_12.phpt   | 26 ++++++++++++++++
+ .../DOMDocument_loadXML_error2_gte2_11.phpt   |  2 +-
  .../DOMDocument_loadXML_error2_gte2_12.phpt   | 30 +++++++++++++++++++
  ext/dom/tests/DOMDocument_load_error1.phpt    |  4 +++
  .../DOMDocument_load_error1_gte2_12.phpt      | 26 ++++++++++++++++
+ .../DOMDocument_load_error2_gte2_11.phpt      |  4 +--
  .../DOMDocument_load_error2_gte2_12.phpt      | 30 +++++++++++++++++++
  ext/xml/tests/bug81351.phpt                   |  4 +--
- 7 files changed, 122 insertions(+), 2 deletions(-)
+ 9 files changed, 125 insertions(+), 5 deletions(-)
  create mode 100644 ext/dom/tests/DOMDocument_loadXML_error1_gte2_12.phpt
  create mode 100644 ext/dom/tests/DOMDocument_loadXML_error2_gte2_12.phpt
  create mode 100644 ext/dom/tests/DOMDocument_load_error1_gte2_12.phpt
@@ -64,6 +66,19 @@ index 0000000000..e1ded0ffad
 +Warning: DOMDocument::load%r(XML){0,1}%r(): Opening and ending tag mismatch: title line 5 and book %s
 +
 +Warning: DOMDocument::load%r(XML){0,1}%r(): %rexpected '>'|Opening and ending tag mismatch: book line (4|5) and books%r %s
+diff --git a/ext/dom/tests/DOMDocument_loadXML_error2_gte2_11.phpt b/ext/dom/tests/DOMDocument_loadXML_error2_gte2_11.phpt
+index ff5ceb3fbe..f52d334813 100644
+--- a/ext/dom/tests/DOMDocument_loadXML_error2_gte2_11.phpt
++++ b/ext/dom/tests/DOMDocument_loadXML_error2_gte2_11.phpt
+@@ -2,7 +2,7 @@
+ Test DOMDocument::loadXML() detects not-well formed XML
+ --SKIPIF--
+ <?php
+-if (LIBXML_VERSION < 21100) die('skip libxml2 test variant for version >= 2.11');
++if (LIBXML_VERSION < 21100 || LIBXML_VERSION >= 21200) die('skip libxml2 test variant for version >= 2.11 && <= 2.12');
+ ?>
+ --DESCRIPTION--
+ This test verifies the method detects attributes values not closed between " or '
 diff --git a/ext/dom/tests/DOMDocument_loadXML_error2_gte2_12.phpt b/ext/dom/tests/DOMDocument_loadXML_error2_gte2_12.phpt
 new file mode 100644
 index 0000000000..6a3ff5841f
@@ -147,6 +162,21 @@ index 0000000000..183c8406fd
 +Warning: DOMDocument::load%r(XML){0,1}%r(): Opening and ending tag mismatch: title line 5 and book %s
 +
 +Warning: DOMDocument::load%r(XML){0,1}%r(): %rexpected '>'|Opening and ending tag mismatch: book line (4|5) and books%r %s
+diff --git a/ext/dom/tests/DOMDocument_load_error2_gte2_11.phpt b/ext/dom/tests/DOMDocument_load_error2_gte2_11.phpt
+index 32b6bf1611..230eddd2d6 100644
+--- a/ext/dom/tests/DOMDocument_load_error2_gte2_11.phpt
++++ b/ext/dom/tests/DOMDocument_load_error2_gte2_11.phpt
+@@ -1,8 +1,8 @@
+ --TEST--
+-Test DOMDocument::load() detects not-well formed 
++Test DOMDocument::load() detects not-well formed
+ --SKIPIF--
+ <?php
+-if (LIBXML_VERSION < 21100) die('skip libxml2 test variant for version >= 2.11');
++if (LIBXML_VERSION < 21100 || LIBXML_VERSION >= 21200) die('skip libxml2 test variant for version >= 2.11 && <= 2.12');
+ ?>
+ --DESCRIPTION--
+ This test verifies the method detects attributes values not closed between " or '
 diff --git a/ext/dom/tests/DOMDocument_load_error2_gte2_12.phpt b/ext/dom/tests/DOMDocument_load_error2_gte2_12.phpt
 new file mode 100644
 index 0000000000..4fadf41736
