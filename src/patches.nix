@@ -9,4 +9,11 @@
     url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/interpreters/php/skip-sqlite3_bind_bug68849.phpt.patch";
     hash = "sha256-D4UeUTHlSVJqcHiyj7smvhPnOyV51S2OloWcUmRWwJY=";
   });
+  ext_dom = (fetchpatch {
+    url = "https://github.com/php/php-src/commit/061058a9b1bbd90d27d97d79aebcf2b5029767b0.patch";
+    hash = "sha256-0hOlAG+pOYp/gUU0MUMZvzWpgr0ncJi5GB8IeNxxyEU=";
+    excludes = [
+      "NEWS"
+    ];
+  });
 }
