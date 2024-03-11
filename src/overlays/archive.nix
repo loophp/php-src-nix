@@ -17,7 +17,7 @@ let
       {
         "${name}" = {
           inherit (set) version;
-          patches = set.patches or [];
+          patches = set.patches or [ ];
           src = prev.fetchurl {
             inherit (set) hash;
             url = "https://www.php.net/distributions/php-${set.version}.tar.bz2";

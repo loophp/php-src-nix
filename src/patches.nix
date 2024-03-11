@@ -1,5 +1,4 @@
-{
-  fetchpatch
+{ fetchpatch
 }:
 {
   libxmlpatch = (fetchpatch {
