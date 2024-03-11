@@ -13,7 +13,7 @@ let
 
   generic = "${inputs.nixpkgs}/pkgs/development/interpreters/php/generic.nix";
 
-  makePhpPackage = { src, version ? null, patches ? [] }: (prev.callPackage generic {
+  makePhpPackage = { src, version ? null, patches ? [ ] }: (prev.callPackage generic {
     hash = null;
 
     version = if version != null then version else
