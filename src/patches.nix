@@ -24,4 +24,9 @@
       "NEWS"
     ];
   });
+  ext_dom_tests_php81 = ./patches/0001-php81-libxml212-tests.patch;
+  ext_dom_tests = (fetchpatch {
+    url = "https://raw.githubusercontent.com/fossar/nix-phps/master/pkgs/patches/libxml-ext.patch";
+    hash = "sha256-hDoxYTOf+cDo3CeTdDc6aNe+uIBqnjlXAq54agjmSqI=";
+  });
 }
