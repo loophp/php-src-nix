@@ -7,6 +7,7 @@ let
   inherit (prev) lib;
 
   patches = prev.callPackage ../patches.nix { };
+  extensions = prev.callPackage ../extensions.nix { };
 
   makePhpPackage = import ../makePhpPackage.nix inputs final prev;
 
@@ -17,7 +18,7 @@ let
       in
       {
         "${name}" = {
-          inherit (set) version;
+          inherit (set) version extensions;
           patches = set.patches or [ ];
           src = prev.fetchurl {
             inherit (set) hash;
@@ -30,11 +31,25 @@ let
     versions;
 
   versions = [
-    { version = "8.1.26"; hash = "sha256-g73iSchKoaBDqMjQ7qCTRcLK5puXhM3wIin8kW+7nqA="; patches = { php = [ patches.ext_sqlite3_tests patches.libxmlpatch patches.ext_sqlite3 patches.ext_dom ]; sqlite3 = [ patches.ext_sqlite3_tests ]; dom = [ patches.ext_dom_tests_php81 ]; }; }
-    { version = "8.2.13"; hash = "sha256-ZlKfQ7ITEx5rJTxWAr7wXwSUWNISknMPzNY7SKBtZ7o="; }
-    { version = "8.3.0"; hash = "sha256-3mfQgz1CsZblpm+hozL0Xilsvo6UcuklayoHHDTcXtY="; }
+    {
+      version = "8.1.27";
+      hash = "sha256-oV/XPqRPLfMLB9JHhuB9GUiw6j7tC4uEVzXVANwov/E=";
+      patches = { php = [ patches.libxmlpatch ]; };
+      cflags = " -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-deprecated-declarations -Wno-incompatible-function-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers";
+      extensions = extensions.php81-to-php8300;
+    }
+    {
+      version = "8.2.17";
+      hash = "sha256-GRMWwgMmfZYWC0fSL5VdTcEXk96KXzJ+DCp2J1polOo=";
+      extensions = extensions.php81-to-php8300;
+    }
+    {
+      version = "8.3.4";
+      hash = "sha256-PFyvGODAokOq7JE6OeywkgQxla3eTD/ELpRdpbkndpU=";
+      extensions = extensions.php81-to-php8300;
+    }
   ];
 in
 lib.mapAttrs
-  (k: v: (makePhpPackage v))
+  (k: v: ((makePhpPackage v).withExtensions (v.extensions)))
   (makePackageSet versions)

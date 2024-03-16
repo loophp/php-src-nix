@@ -1,0 +1,133 @@
+From 7b14cd1d4c506257d8707d2c119c0b6490ca6531 Mon Sep 17 00:00:00 2001
+From: Pol Dellaiera <pol.dellaiera@protonmail.com>
+Date: Wed, 13 Mar 2024 21:49:59 +0100
+Subject: [PATCH] php8.1.18 fix
+
+---
+ ext/dom/tests/DOMDocument_loadXML_error1.phpt |  4 +++
+ ext/dom/tests/DOMDocument_loadXML_error2.phpt | 30 -------------------
+ ext/dom/tests/DOMDocument_load_error1.phpt    |  4 +++
+ ext/dom/tests/DOMDocument_load_error2.phpt    | 30 -------------------
+ ext/xml/tests/bug81351.phpt                   |  4 +--
+ 5 files changed, 10 insertions(+), 62 deletions(-)
+ delete mode 100644 ext/dom/tests/DOMDocument_loadXML_error2.phpt
+ delete mode 100644 ext/dom/tests/DOMDocument_load_error2.phpt
+
+diff --git a/ext/dom/tests/DOMDocument_loadXML_error1.phpt b/ext/dom/tests/DOMDocument_loadXML_error1.phpt
+index 14d99e4ed9..e32f5fe41f 100644
+--- a/ext/dom/tests/DOMDocument_loadXML_error1.phpt
++++ b/ext/dom/tests/DOMDocument_loadXML_error1.phpt
+@@ -10,6 +10,10 @@ Environment variables used in the test:
+ Antonio Diaz Ruiz <dejalatele@gmail.com>
+ --INI--
+ assert.bail=true
++--SKIPIF--
++<?php
++if (LIBXML_VERSION >= 21200) die('skip libxml2 test variant for version < 2.12');
++?>
+ --EXTENSIONS--
+ dom
+ --ENV--
+diff --git a/ext/dom/tests/DOMDocument_loadXML_error2.phpt b/ext/dom/tests/DOMDocument_loadXML_error2.phpt
+deleted file mode 100644
+index a24d5215da..0000000000
+--- a/ext/dom/tests/DOMDocument_loadXML_error2.phpt
++++ /dev/null
+@@ -1,30 +0,0 @@
+---TEST--
+-Test DOMDocument::loadXML() detects not-well formed XML
+---DESCRIPTION--
+-This test verifies the method detects attributes values not closed between " or '
+-Environment variables used in the test:
+-- XML_FILE: the xml file to load
+-- LOAD_OPTIONS: the second parameter to pass to the method
+-- EXPECTED_RESULT: the expected result
+---CREDITS--
+-Antonio Diaz Ruiz <dejalatele@gmail.com>
+---INI--
+-assert.bail=true
+---EXTENSIONS--
+-dom
+---ENV--
+-XML_FILE=/not_well_formed2.xml
+-LOAD_OPTIONS=0
+-EXPECTED_RESULT=0
+---FILE_EXTERNAL--
+-domdocumentloadxml_test_method.inc
+---EXPECTF--
+-Warning: DOMDocument::load%r(XML){0,1}%r(): AttValue: " or ' expected %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): attributes construct error %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Couldn't find end of Start Tag book %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Opening and ending tag mismatch: books %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Extra content at the end of the document %s
+diff --git a/ext/dom/tests/DOMDocument_load_error1.phpt b/ext/dom/tests/DOMDocument_load_error1.phpt
+index f736b0a0e8..96ea5ace50 100644
+--- a/ext/dom/tests/DOMDocument_load_error1.phpt
++++ b/ext/dom/tests/DOMDocument_load_error1.phpt
+@@ -10,6 +10,10 @@ Environment variables used in the test:
+ Antonio Diaz Ruiz <dejalatele@gmail.com>
+ --INI--
+ assert.bail=true
++--SKIPIF--
++<?php
++if (LIBXML_VERSION >= 21200) die('skip libxml2 test variant for version < 2.12');
++?>
+ --EXTENSIONS--
+ dom
+ --ENV--
+diff --git a/ext/dom/tests/DOMDocument_load_error2.phpt b/ext/dom/tests/DOMDocument_load_error2.phpt
+deleted file mode 100644
+index cd13b3f901..0000000000
+--- a/ext/dom/tests/DOMDocument_load_error2.phpt
++++ /dev/null
+@@ -1,30 +0,0 @@
+---TEST--
+-Test DOMDocument::load() detects not-well formed XML
+---DESCRIPTION--
+-This test verifies the method detects attributes values not closed between " or '
+-Environment variables used in the test:
+-- XML_FILE: the xml file to load
+-- LOAD_OPTIONS: the second parameter to pass to the method
+-- EXPECTED_RESULT: the expected result
+---CREDITS--
+-Antonio Diaz Ruiz <dejalatele@gmail.com>
+---INI--
+-assert.bail=true
+---EXTENSIONS--
+-dom
+---ENV--
+-XML_FILE=/not_well_formed2.xml
+-LOAD_OPTIONS=0
+-EXPECTED_RESULT=0
+---FILE_EXTERNAL--
+-domdocumentload_test_method.inc
+---EXPECTF--
+-Warning: DOMDocument::load%r(XML){0,1}%r(): AttValue: " or ' expected %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): attributes construct error %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Couldn't find end of Start Tag book %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Opening and ending tag mismatch: books %s
+-
+-Warning: DOMDocument::load%r(XML){0,1}%r(): Extra content at the end of the document %s
+diff --git a/ext/xml/tests/bug81351.phpt b/ext/xml/tests/bug81351.phpt
+index 78aea04104..7380a9a937 100644
+--- a/ext/xml/tests/bug81351.phpt
++++ b/ext/xml/tests/bug81351.phpt
+@@ -21,6 +21,6 @@ $code = xml_get_error_code($parser);
+ $error = xml_error_string($code);
+ echo "xml_parse returned $success, xml_get_error_code = $code, xml_error_string = $error\r\n";
+ ?>
+---EXPECT--
++--EXPECTF--
+ xml_parse returned 1, xml_get_error_code = 0, xml_error_string = No error
+-xml_parse returned 0, xml_get_error_code = 5, xml_error_string = Invalid document end
++%rxml_parse returned 0, xml_get_error_code = 5, xml_error_string = Invalid document end|xml_parse returned 0, xml_get_error_code = 77, xml_error_string = Tag not finished%r
+-- 
+2.43.2
+
