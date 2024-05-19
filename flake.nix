@@ -20,41 +20,54 @@
     };
   };
 
-  outputs = inputs@{ self, flake-parts, systems, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
-    systems = import systems;
+  outputs =
+    inputs@{
+      self,
+      flake-parts,
+      systems,
+      ...
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import systems;
 
-    imports = [
-      inputs.flake-parts.flakeModules.easyOverlay
-    ];
+      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
 
-    flake = {
-      overlays.active = import ./src/overlays/active.nix inputs;
-      overlays.archive = import ./src/overlays/archive.nix inputs;
-      overlays.snapshot = import ./src/overlays/snapshot.nix inputs;
-    };
-
-    perSystem = { config, self', inputs', pkgs, system, lib, ... }:
-      let
-        packages = lib.foldlAttrs
-          (acc: name: value: acc // { "${name}" = value; })
-          { }
-          (inputs.self.overlays.archive pkgs pkgs) // (inputs.self.overlays.active pkgs pkgs) // (inputs.self.overlays.snapshot pkgs pkgs);
-      in
-      {
-        _module.args.pkgs = import self.inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            inputs.self.overlays.active
-          ];
-          config.allowUnfree = true;
-        };
-        checks = self'.packages;
-
-        formatter = pkgs.nixpkgs-fmt;
-
-        overlayAttrs = self'.packages;
-
-        inherit packages;
+      flake = {
+        overlays.active = import ./src/overlays/active.nix inputs;
+        overlays.archive = import ./src/overlays/archive.nix inputs;
+        overlays.snapshot = import ./src/overlays/snapshot.nix inputs;
       };
-  };
+
+      perSystem =
+        {
+          self',
+          pkgs,
+          system,
+          lib,
+          ...
+        }:
+        let
+          packages =
+            lib.foldlAttrs (
+              acc: name: value:
+              acc // { "${name}" = value; }
+            ) { } (inputs.self.overlays.archive pkgs pkgs)
+            // (inputs.self.overlays.active pkgs pkgs)
+            // (inputs.self.overlays.snapshot pkgs pkgs);
+        in
+        {
+          _module.args.pkgs = import self.inputs.nixpkgs {
+            inherit system;
+            overlays = [ inputs.self.overlays.active ];
+            config.allowUnfree = true;
+          };
+          checks = self'.packages;
+
+          formatter = pkgs.nixfmt-rfc-style;
+
+          overlayAttrs = self'.packages;
+
+          inherit packages;
+        };
+    };
 }
