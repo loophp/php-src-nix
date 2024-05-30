@@ -101,6 +101,12 @@ let
                 builtins.map replaceOpenssl attrs.buildInputs;
             });
 
+            # Since https://github.com/php/php-src/pull/14362
+            # the SOAP extension requires the `session` extension.
+            soap = prevPO.extensions.soap.overrideAttrs (attrs: {
+              internalDeps = attrs.internalDeps or [ ] ++ [ prevPO.extensions.session ];
+            });
+
             sockets = prevPO.extensions.sockets.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
               patches =
