@@ -18,6 +18,7 @@ jobs:
           curl -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm
           echo "trusted-users = root worker" >> /etc/nix/nix.conf
           echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+          sudo systemctl restart nix-daemon
 
       - name: Run nix formatter tool
         run: nix fmt . -- --check
