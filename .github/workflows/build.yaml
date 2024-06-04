@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Lix
         run: |
-          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --enable-flakes --no-confirm --extra-conf "trusted-users = root runner"
+          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm --enable-flakes --extra-conf "trusted-users = root worker"
 
       - name: Build PHP matrix
         id: set-phps
@@ -52,10 +52,7 @@ jobs:
 
       - name: Install Lix
         run: |
-          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm
-          echo "trusted-users = root worker" | sudo tee -a /etc/nix/nix.conf
-          echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
-          sudo systemctl restart nix-daemon
+          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm --enable-flakes --extra-conf "trusted-users = root worker"
 
       - uses: cachix/cachix-action@v15
         with:
