@@ -52,7 +52,7 @@ jobs:
 
       - name: Install Lix
         run: |
-          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --enable-flakes --no-confirm --extra-conf "trusted-users = root runner"
+          curl -sSf -L https://install.lix.systems/lix | sh -s -- install --enable-flakes --no-confirm --extra-conf "experimental-features = nix-command flakes\ntrusted-users = root runner"
 
       - uses: cachix/cachix-action@v15
         with:
