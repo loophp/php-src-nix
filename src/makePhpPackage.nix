@@ -68,7 +68,7 @@ let
             intl = prevPO.extensions.intl.overrideAttrs (attrs: {
               buildInputs =
                 if lib.versionOlder prevPO.php.version "8.1.22" then
-                  (builtins.filter (pkg: pkg != prevPO.icu73) attrs.buildInputs) ++ [ prevPO.icu64 ]
+                  (builtins.filter (pkg: pkg != prev.icu73) attrs.buildInputs) ++ [ prev.icu64 ]
                 else
                   attrs.buildInputs;
             });
