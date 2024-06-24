@@ -65,6 +65,14 @@ let
 
         packageOverrides = finalPO: prevPO: {
           extensions = prevPO.extensions // {
+            intl = prevPO.extensions.intl.overrideAttrs (attrs: {
+              buildInputs =
+                if lib.versionOlder prevPO.php.version "8.1.22" then
+                  (builtins.filter (pkg: pkg != prevPO.icu73) attrs.buildInputs) ++ [ prevPO.icu64 ]
+                else
+                  attrs.buildInputs;
+            });
+
             dom = prevPO.extensions.dom.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
               patches = (patches.dom or [ ]) ++ attrs.patches;
