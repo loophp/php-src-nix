@@ -167,6 +167,15 @@ let
       cflags = " -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-deprecated-declarations -Wno-incompatible-function-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers";
       extensions = extensions.php81-to-php8300;
     }
+    {
+      version = "8.1.28";
+      hash = "sha256-i+RQCW4BU8R9dThOfdWVzIl/HVPOAGBwjOlYm8wxQe4=";
+      patches = {
+        php = [ patches.libxmlpatch patches.ext_dom_tests ];
+      };
+      cflags = " -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-deprecated-declarations -Wno-incompatible-function-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers";
+      extensions = extensions.php81-to-php8300;
+    }
 
     {
       version = "8.2.5";
@@ -315,6 +324,11 @@ let
       hash = "sha256-GRMWwgMmfZYWC0fSL5VdTcEXk96KXzJ+DCp2J1polOo=";
       extensions = extensions.php81-to-php8300;
     }
+    {
+      version = "8.2.19";
+      hash = "sha256-PBj3zlG3x7JreX4flwedOGswNH6wToF/XmyOmydeKmo=";
+      extensions = extensions.php81-to-php8300;
+    }
 
     {
       version = "8.3.0";
@@ -351,6 +365,11 @@ let
     {
       version = "8.3.4";
       hash = "sha256-PFyvGODAokOq7JE6OeywkgQxla3eTD/ELpRdpbkndpU=";
+      extensions = extensions.php81-to-php8300;
+    }
+    {
+      version = "8.3.7";
+      hash = "sha256-AcIM3hxaVpZlGHXtIvUHhJZ5+6dA+MQhYWt9Q9f3l9o=";
       extensions = extensions.php81-to-php8300;
     }
   ];

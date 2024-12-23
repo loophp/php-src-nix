@@ -120,6 +120,9 @@ let
             # the SOAP extension requires the `session` extension.
             soap = prevPO.extensions.soap.overrideAttrs (attrs: {
               internalDeps = attrs.internalDeps or [ ] ++ [ prevPO.extensions.session ];
+              # Remove soap patch as it has been upstreamed
+              # See https://github.com/NixOS/nixpkgs/pull/358196 (fix soap test)
+              patches = if (lib.versionAtLeast prevPO.php.version "8.3") then [] else (attrs.patches or []);
             });
 
             sockets = prevPO.extensions.sockets.overrideAttrs (attrs: {
