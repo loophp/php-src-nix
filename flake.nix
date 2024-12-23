@@ -18,6 +18,10 @@
       url = "github:php/php-src/PHP-8.3";
       flake = false;
     };
+    php-src-84 = {
+      url = "github:php/php-src/PHP-8.4";
+      flake = false;
+    };
   };
 
   outputs =

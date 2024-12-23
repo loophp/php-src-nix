@@ -82,7 +82,7 @@ let
 
             dom = prevPO.extensions.dom.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = (patches.dom or [ ]) ++ attrs.patches;
+              patches = (patches.dom or [ ]) ++ (attrs.patches or []);
             });
 
             opcache = prevPO.extensions.opcache.overrideAttrs (attrs: {
@@ -144,12 +144,12 @@ let
 
             tokenizer = prevPO.extensions.tokenizer.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = [ ] ++ lib.optionals (lib.versionAtLeast prevPO.php.version "8.1") attrs.patches;
+              patches = [ ] ++ lib.optionals (lib.versionAtLeast prevPO.php.version "8.1") (attrs.patches or []);
             });
 
             sqlite3 = prevPO.extensions.sqlite3.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = (patches.sqlite3 or [ ]) ++ attrs.patches;
+              patches = (patches.sqlite3 or [ ]) ++ (attrs.patches or []);
             });
           };
         };

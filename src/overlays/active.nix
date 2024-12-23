@@ -52,6 +52,11 @@ let
       hash = "sha256-AcIM3hxaVpZlGHXtIvUHhJZ5+6dA+MQhYWt9Q9f3l9o=";
       extensions = extensions.php81-to-php8300;
     }
+    {
+      version = "8.4.2";
+      hash = "sha256-70/pkhuIXOOwR3kqtgJg6vZX4igSvlEdGdDkXt+YR4M=";
+      extensions = extensions.php-from-8400;
+    }
   ];
 in
 lib.mapAttrs (k: v: ((makePhpPackage v).withExtensions (v.extensions))) (makePackageSet versions)

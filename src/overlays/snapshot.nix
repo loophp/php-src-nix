@@ -30,8 +30,13 @@ let
       src = inputs.php-src-83;
       extensions = extensions.php81-to-php8300;
     };
+    php-8-4-snapshot = {
+      version = "8.4.999-${inputs.php-src-84.shortRev}";
+      src = inputs.php-src-84;
+      extensions = extensions.php-from-8400;
+    };
     php-master-snapshot = {
-      version = "8.4.999-${inputs.php-src-master.shortRev}";
+      version = "8.5.999-${inputs.php-src-master.shortRev}";
       src = inputs.php-src-master;
       extensions = extensions.php-from-8400;
     };
