@@ -34,23 +34,24 @@ let
 
   versions = [
     {
-      version = "8.1.28";
-      hash = "sha256-i+RQCW4BU8R9dThOfdWVzIl/HVPOAGBwjOlYm8wxQe4=";
-      patches = {
-        php = [ patches.libxmlpatch ];
-      };
-      cflags = " -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-deprecated-declarations -Wno-incompatible-function-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers";
+      version = "8.1.31";
+      hash = "sha256-CzmCizRRUcrxt5XZ9LkjyYhyMXdsMwdt/J2QpEOQ0Nw=";
       extensions = extensions.php81-to-php8300;
     }
     {
-      version = "8.2.19";
-      hash = "sha256-PBj3zlG3x7JreX4flwedOGswNH6wToF/XmyOmydeKmo=";
+      version = "8.2.27";
+      hash = "sha256-blfbr3aafz3rTw9IuMU15nHMChgCLtf2/yO1DpQdS2A=";
       extensions = extensions.php81-to-php8300;
     }
     {
-      version = "8.3.7";
-      hash = "sha256-AcIM3hxaVpZlGHXtIvUHhJZ5+6dA+MQhYWt9Q9f3l9o=";
+      version = "8.3.15";
+      hash = "sha256-sWdaT/cwtYEbjmp2h0iMQug14Vapl3aqPm8Ber2jvpg=";
       extensions = extensions.php81-to-php8300;
+    }
+    {
+      version = "8.4.2";
+      hash = "sha256-70/pkhuIXOOwR3kqtgJg6vZX4igSvlEdGdDkXt+YR4M=";
+      extensions = extensions.php-from-8400;
     }
   ];
 in

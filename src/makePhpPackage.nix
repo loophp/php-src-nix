@@ -82,7 +82,7 @@ let
 
             dom = prevPO.extensions.dom.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = (patches.dom or [ ]) ++ attrs.patches;
+              patches = (patches.dom or [ ]) ++ (attrs.patches or []);
             });
 
             opcache = prevPO.extensions.opcache.overrideAttrs (attrs: {
@@ -120,6 +120,9 @@ let
             # the SOAP extension requires the `session` extension.
             soap = prevPO.extensions.soap.overrideAttrs (attrs: {
               internalDeps = attrs.internalDeps or [ ] ++ [ prevPO.extensions.session ];
+              # Remove soap patch as it has been upstreamed
+              # See https://github.com/NixOS/nixpkgs/pull/358196 (fix soap test)
+              patches = if (lib.versionAtLeast prevPO.php.version "8.3") then [] else (attrs.patches or []);
             });
 
             sockets = prevPO.extensions.sockets.overrideAttrs (attrs: {
@@ -144,12 +147,12 @@ let
 
             tokenizer = prevPO.extensions.tokenizer.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = [ ] ++ lib.optionals (lib.versionAtLeast prevPO.php.version "8.1") attrs.patches;
+              patches = [ ] ++ lib.optionals (lib.versionAtLeast prevPO.php.version "8.1") (attrs.patches or []);
             });
 
             sqlite3 = prevPO.extensions.sqlite3.overrideAttrs (attrs: {
               NIX_CFLAGS_COMPILE = attrs.NIX_CFLAGS_COMPILE or "" + cflags;
-              patches = (patches.sqlite3 or [ ]) ++ attrs.patches;
+              patches = (patches.sqlite3 or [ ]) ++ (attrs.patches or []);
             });
           };
         };
